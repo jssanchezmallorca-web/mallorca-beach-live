@@ -1,0 +1,21 @@
+name: Validate BEACH CAM beta
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'beta/**'
+      - '.github/workflows/validate-beta.yml'
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check required files
+        run: test -f beta/index.html && test -f beta/app.js && test -f beta/style.css && test -f beta/beaches.js && test -f beta/manifest.webmanifest && test -f beta/sw.js
+      - name: Check JavaScript syntax
+        run: node --check beta/app.js && node --check beta/beaches.js && node --check beta/sw.js && node --check cameras.js
+      - name: Check manifest JSON
+        run: python -m json.tool beta/manifest.webmanifest >/dev/null
+      - name: Check BEACH CAM title
+        run: grep -q '<title>BEACH CAM</title>' beta/index.html
