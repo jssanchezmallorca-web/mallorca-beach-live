@@ -2,12 +2,12 @@
   "rules": {
     ".read": false,
     "_private": {
-      ".read": "auth != null && auth.token.email === 'MASTER_EMAIL'",
-      ".write": "auth != null && auth.token.email === 'MASTER_EMAIL'"
+      ".read": "auth != null && auth.token.email === 'jssanchezmallorca@gmail.com'",
+      ".write": "auth != null && auth.token.email === 'jssanchezmallorca@gmail.com'"
     },
     "publicConfig": {
       ".read": true,
-      ".write": "auth != null && auth.token.email === 'MASTER_EMAIL'",
+      ".write": "auth != null && auth.token.email === 'jssanchezmallorca@gmail.com'",
       "locationNotice": {
         ".validate": "!newData.exists() || (newData.isString() && newData.val().length <= 500)"
       },
@@ -18,23 +18,23 @@
       }
     },
     "locations": {
-      ".read": "auth != null && auth.token.email === 'MASTER_EMAIL'",
+      ".read": "auth != null && auth.token.email === 'jssanchezmallorca@gmail.com'",
       "$uid": {
-        ".write": "auth != null && (auth.token.email === 'MASTER_EMAIL' || (!root.child('revoked').child($uid).exists() && auth.uid === $uid && (data.exists() || newData.child('familyKey').val() === root.child('_private').child('familyKey').val())))",
+        ".write": "auth != null && (auth.token.email === 'jssanchezmallorca@gmail.com' || (!root.child('revoked').child($uid).exists() && auth.uid === $uid && (data.exists() || newData.child('familyKey').val() === root.child('_private').child('familyKey').val())))",
         ".validate": "!newData.exists() || (newData.hasChildren(['label','lat','lng','updatedAt']) && newData.child('lat').isNumber() && newData.child('lng').isNumber() && newData.child('lat').val() >= -90 && newData.child('lat').val() <= 90 && newData.child('lng').val() >= -180 && newData.child('lng').val() <= 180 && newData.child('label').isString() && newData.child('label').val().length <= 40)"
       }
     },
     "aliases": {
-      ".read": "auth != null && auth.token.email === 'MASTER_EMAIL'",
+      ".read": "auth != null && auth.token.email === 'jssanchezmallorca@gmail.com'",
       "$uid": {
-        ".write": "auth != null && auth.token.email === 'MASTER_EMAIL'",
+        ".write": "auth != null && auth.token.email === 'jssanchezmallorca@gmail.com'",
         ".validate": "!newData.exists() || (newData.isString() && newData.val().length <= 40)"
       }
     },
     "revoked": {
-      ".read": "auth != null && auth.token.email === 'MASTER_EMAIL'",
+      ".read": "auth != null && auth.token.email === 'jssanchezmallorca@gmail.com'",
       "$uid": {
-        ".write": "auth != null && auth.token.email === 'MASTER_EMAIL'"
+        ".write": "auth != null && auth.token.email === 'jssanchezmallorca@gmail.com'"
       }
     }
   }
