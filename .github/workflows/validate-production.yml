@@ -1,0 +1,27 @@
+name: Validate BEACH CAM production
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'app.js'
+      - 'style.css'
+      - 'beaches.js'
+      - 'cameras.js'
+      - 'manifest.webmanifest'
+      - 'sw.js'
+      - '.github/workflows/validate-production.yml'
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check required files
+        run: test -f index.html && test -f app.js && test -f style.css && test -f beaches.js && test -f cameras.js && test -f manifest.webmanifest && test -f sw.js
+      - name: Check JavaScript syntax
+        run: node --check app.js && node --check beaches.js && node --check cameras.js && node --check sw.js
+      - name: Check manifest JSON
+        run: python -m json.tool manifest.webmanifest >/dev/null
+      - name: Check production interface
+        run: grep -q '<title>BEACH CAM</title>' index.html && grep -q 'MAPA' index.html && grep -q 'CERCA' index.html
