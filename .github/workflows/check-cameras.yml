@@ -2,7 +2,7 @@ name: Check BEACH CAM cameras
 
 on:
   schedule:
-    - cron: '0 6 */2 * *'
+    - cron: '30 6 */2 * *'
   workflow_dispatch:
 
 jobs:
