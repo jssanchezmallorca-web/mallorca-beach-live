@@ -1,0 +1,7 @@
+{
+  "iosWhenInUseDescription": "BEACH CAM usa tu ubicación para encontrar playas cercanas y funciones de mapa.",
+  "iosAlwaysDescription": "BEACH CAM puede usar tu ubicación en segundo plano para mantener disponible tu última ubicación para tu grupo familiar.",
+  "androidForegroundServiceTitle": "BEACH CAM",
+  "androidForegroundServiceText": "Ubicación activa",
+  "androidBackgroundDisclosure": "BEACH CAM puede usar tu ubicación en segundo plano para mantener disponible tu última ubicación para tu grupo familiar."
+}
