@@ -1,0 +1,42 @@
+name: Check BEACH CAM cameras
+
+on:
+  schedule:
+    - cron: '17 4 */2 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Check camera health
+        run: python3 scripts/check_cameras.py
+
+      - name: Save health status
+        id: save
+        run: |
+          if git diff --quiet -- camera-health.js; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add camera-health.js
+          git commit -m "Update automatic camera health status"
+          git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Redeploy updated status
+        if: steps.save.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --ref main
