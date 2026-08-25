@@ -41,11 +41,10 @@ def probe(c):
         if mode=='youtube':
             vid=c['param']; status,ct,data=get('https://www.youtube.com/watch?v='+vid)
             s=data.decode('utf-8','ignore')
-            if status!=200:return 'fail',f'HTTP {status}'
+            if status!=200:return 'unknown',f'YouTube HTTP {status}; no concluyente'
             if '"isLiveNow":true' in s or '"isLive":true' in s:return 'online','YouTube live detectado'
-            if 'LIVE_STREAM_OFFLINE' in s or ('"isLiveContent":true' in s and '"isLiveNow":false' in s):return 'offline','YouTube live sin emisión'
-            if 'Video unavailable' in s:return 'offline','Vídeo no disponible'
-            return 'unknown','YouTube accesible; directo no confirmable'
+            if 'LIVE_STREAM_OFFLINE' in s or ('"isLiveContent":true' in s and '"isLiveNow":false' in s):return 'offline','YouTube indica directo sin emisión'
+            return 'unknown','YouTube accesible; estado del directo no confirmable'
         if mode=='ipcam':
             alias=c['param']; status,ct,data=get(f'https://g0.ipcamlive.com/player/snapshot.php?alias={alias}',200000)
             return ('online','Snapshot IPCam válido') if status==200 and 'image' in ct and len(data)>1000 else ('fail','Snapshot IPCam inválido')
@@ -59,6 +58,7 @@ def probe(c):
         if any(x in s for x in offline_terms):return 'offline','La página indica que la webcam está offline'
         return 'unknown','Página accesible; vídeo no verificable automáticamente'
     except Exception as e:
+        if c.get('mode')=='youtube':return 'unknown',f'YouTube no concluyente: {type(e).__name__}'
         return 'fail',f'{type(e).__name__}: {str(e)[:100]}'
 
 def main():
@@ -67,12 +67,14 @@ def main():
     for c in cameras():
         p=prev.get(c['key'],{}); verdict,note=probe(c)
         failures=int(p.get('failures',0) or 0)
-        if verdict=='online':status='online';failures=0
+        if verdict=='online':
+            status='online';failures=0
         elif verdict in ('offline','fail'):
             failures+=1
             status='offline' if failures>=2 else p.get('status','unknown')
         else:
-            status=p.get('status','unknown')
+            failures=0
+            status='offline' if p.get('status')=='offline' else 'unknown'
         result[c['key']]={'status':status,'failures':failures,'checkedAt':now,'note':note}
         print(f"{c['key']}: {status} ({verdict}) - {note}")
     payload={'updatedAt':now,'cameras':result}
