@@ -1,3 +1,23 @@
 window.BEACH_CAM_TEXTS={
-  locationNotice:'BEACH CAM usa tu ubicación para encontrar playas cercanas y compartirla con tu grupo familiar…'
+  locationTitle:'Activar ubicación',
+  locationNotice:'BEACH CAM usa tu ubicación para encontrar playas cercanas y compartirla con tu grupo familiar…',
+  backgroundNotice:'Para mantener disponible tu última ubicación, BEACH CAM puede usar la ubicación también en segundo plano.',
+  allowLocation:'Permitir',
+  later:'Más tarde',
+  gpsUnsupported:'Este dispositivo no admite geolocalización.',
+  gpsDenied:'Permiso de ubicación denegado.',
+  gpsUnavailable:'No se ha podido obtener tu ubicación.',
+  nearGpsTitle:'Activa el GPS',
+  nearGpsText:'Necesito tu ubicación para ordenar las playas.',
+  installIntro:'Este enlace prepara BEACH CAM para tu grupo familiar. Al usar el GPS, la app te informará del uso de la ubicación antes de pedir el permiso del sistema.',
+  installButton:'Instalar BEACH CAM',
+  openApp:'Abrir BEACH CAM',
+  installWait:'Espera unos segundos si el botón de instalación todavía no está disponible.',
+  installReady:'Todo listo para instalar.',
+  installFallback:'En Chrome: menú ⋮ → Instalar aplicación / Añadir a pantalla de inicio.',
+  iosInstallTitle:'En iPhone/iPad:',
+  iosInstallStep1:'1. Pulsa Compartir en Safari.',
+  iosInstallStep2:'2. Pulsa Añadir a pantalla de inicio.',
+  iosInstallStep3:'3. Abre BEACH CAM desde su icono.',
+  alreadyInstalled:'✓ BEACH CAM ya está instalada.'
 };
