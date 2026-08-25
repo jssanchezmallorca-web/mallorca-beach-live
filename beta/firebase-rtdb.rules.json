@@ -8,8 +8,8 @@
     "locations": {
       ".read": "auth != null && auth.token.email === 'MASTER_EMAIL'",
       "$uid": {
-        ".write": "auth != null && (auth.token.email === 'MASTER_EMAIL' || (auth.uid === $uid && newData.child('familyKey').val() === root.child('_private').child('familyKey').val()))",
-        ".validate": "!newData.exists() || (newData.hasChildren(['label','familyKey','lat','lng','updatedAt']) && newData.child('lat').isNumber() && newData.child('lng').isNumber() && newData.child('lat').val() >= -90 && newData.child('lat').val() <= 90 && newData.child('lng').val() >= -180 && newData.child('lng').val() <= 180 && newData.child('label').isString() && newData.child('label').val().length <= 40)"
+        ".write": "auth != null && !root.child('revoked').child($uid).exists() && (auth.token.email === 'MASTER_EMAIL' || (auth.uid === $uid && (data.exists() || newData.child('familyKey').val() === root.child('_private').child('familyKey').val())))",
+        ".validate": "!newData.exists() || (newData.hasChildren(['label','lat','lng','updatedAt']) && newData.child('lat').isNumber() && newData.child('lng').isNumber() && newData.child('lat').val() >= -90 && newData.child('lat').val() <= 90 && newData.child('lng').val() >= -180 && newData.child('lng').val() <= 180 && newData.child('label').isString() && newData.child('label').val().length <= 40)"
       }
     },
     "aliases": {
@@ -17,6 +17,12 @@
       "$uid": {
         ".write": "auth != null && auth.token.email === 'MASTER_EMAIL'",
         ".validate": "!newData.exists() || (newData.isString() && newData.val().length <= 40)"
+      }
+    },
+    "revoked": {
+      ".read": "auth != null && auth.token.email === 'MASTER_EMAIL'",
+      "$uid": {
+        ".write": "auth != null && auth.token.email === 'MASTER_EMAIL'"
       }
     }
   }
