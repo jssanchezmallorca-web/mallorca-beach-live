@@ -1,0 +1,10 @@
+(function(){
+  const cfg=window.BEACH_CAM_FIREBASE||{};
+  const state={ready:false,uid:null,lastSent:0,lastLat:null,lastLng:null};
+  function configured(){return !!(cfg.enabled&&cfg.firebaseConfig&&cfg.firebaseConfig.apiKey&&cfg.firebaseConfig.databaseURL)}
+  function deviceLabel(){let v=localStorage.getItem('bc-device-label');if(v)return v;let fallback=`Dispositivo ${Math.random().toString(36).slice(2,6).toUpperCase()}`;v=window.prompt('Nombre de este dispositivo para el mapa familiar (ej. Móvil Ana):',fallback)||fallback;v=v.trim().slice(0,40)||fallback;localStorage.setItem('bc-device-label',v);return v}
+  async function init(){if(state.ready||!configured())return state.ready;try{if(!window.firebase?.apps?.length)firebase.initializeApp(cfg.firebaseConfig);const auth=firebase.auth();if(!auth.currentUser)await auth.signInAnonymously();state.uid=auth.currentUser.uid;state.ready=true;const ref=firebase.database().ref(`locations/${state.uid}`);ref.onDisconnect().update({online:false,lastDisconnect:firebase.database.ServerValue.TIMESTAMP});return true}catch(e){console.warn('BEACH CAM tracking init error',e);return false}}
+  function movedEnough(lat,lng){if(state.lastLat==null)return true;const dx=(lat-state.lastLat)*111000,dy=(lng-state.lastLng)*85000;return Math.hypot(dx,dy)>=15}
+  async function updateLocation(coords){if(!configured()||!coords)return false;const now=Date.now();if(now-state.lastSent<12000&&!movedEnough(coords.latitude,coords.longitude))return true;if(!await init())return false;try{await firebase.database().ref(`locations/${state.uid}`).update({label:deviceLabel(),lat:Number(coords.latitude),lng:Number(coords.longitude),accuracy:Number(coords.accuracy||0),heading:Number.isFinite(coords.heading)?Number(coords.heading):null,speed:Number.isFinite(coords.speed)?Number(coords.speed):null,online:true,updatedAt:firebase.database.ServerValue.TIMESTAMP,userAgent:navigator.userAgent.slice(0,180)});state.lastSent=now;state.lastLat=coords.latitude;state.lastLng=coords.longitude;return true}catch(e){console.warn('BEACH CAM tracking update error',e);return false}}
+  window.BeachCamTracking={configured,init,updateLocation};
+})();
