@@ -5,6 +5,13 @@
       ".read": "auth != null && auth.token.email === 'MASTER_EMAIL'",
       ".write": "auth != null && auth.token.email === 'MASTER_EMAIL'"
     },
+    "publicConfig": {
+      ".read": true,
+      ".write": "auth != null && auth.token.email === 'MASTER_EMAIL'",
+      "locationNotice": {
+        ".validate": "!newData.exists() || (newData.isString() && newData.val().length <= 500)"
+      }
+    },
     "locations": {
       ".read": "auth != null && auth.token.email === 'MASTER_EMAIL'",
       "$uid": {
