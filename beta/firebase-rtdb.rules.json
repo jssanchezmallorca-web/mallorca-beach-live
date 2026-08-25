@@ -10,6 +10,11 @@
       ".write": "auth != null && auth.token.email === 'MASTER_EMAIL'",
       "locationNotice": {
         ".validate": "!newData.exists() || (newData.isString() && newData.val().length <= 500)"
+      },
+      "texts": {
+        "$key": {
+          ".validate": "!newData.exists() || (newData.isString() && newData.val().length <= 700)"
+        }
       }
     },
     "locations": {
