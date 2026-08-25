@@ -1,10 +1,22 @@
 {
   "rules": {
-    ".read": "auth != null && auth.token.email === 'MASTER_EMAIL'",
+    ".read": false,
+    "_private": {
+      ".read": "auth != null && auth.token.email === 'MASTER_EMAIL'",
+      ".write": "auth != null && auth.token.email === 'MASTER_EMAIL'"
+    },
     "locations": {
-      "$deviceId": {
-        ".write": "auth != null && auth.token.email === 'TRACKER_EMAIL'",
-        ".validate": "newData.hasChildren(['label','lat','lng','updatedAt']) && newData.child('lat').isNumber() && newData.child('lng').isNumber() && newData.child('lat').val() >= -90 && newData.child('lat').val() <= 90 && newData.child('lng').val() >= -180 && newData.child('lng').val() <= 180 && newData.child('label').isString() && newData.child('label').val().length <= 40"
+      ".read": "auth != null && auth.token.email === 'MASTER_EMAIL'",
+      "$uid": {
+        ".write": "auth != null && (auth.token.email === 'MASTER_EMAIL' || (auth.uid === $uid && newData.child('familyKey').val() === root.child('_private').child('familyKey').val()))",
+        ".validate": "!newData.exists() || (newData.hasChildren(['label','familyKey','lat','lng','updatedAt']) && newData.child('lat').isNumber() && newData.child('lng').isNumber() && newData.child('lat').val() >= -90 && newData.child('lat').val() <= 90 && newData.child('lng').val() >= -180 && newData.child('lng').val() <= 180 && newData.child('label').isString() && newData.child('label').val().length <= 40)"
+      }
+    },
+    "aliases": {
+      ".read": "auth != null && auth.token.email === 'MASTER_EMAIL'",
+      "$uid": {
+        ".write": "auth != null && auth.token.email === 'MASTER_EMAIL'",
+        ".validate": "!newData.exists() || (newData.isString() && newData.val().length <= 40)"
       }
     }
   }
