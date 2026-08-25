@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import json
-import re
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -12,6 +11,18 @@ CAMERAS_JS = ROOT / "cameras.js"
 STATUS_JSON = ROOT / "camera-status.json"
 TIMEOUT = 18
 UA = "Mozilla/5.0 (compatible; BEACH-CAM-Health/1.0; +https://github.com/jssanchezmallorca-web/mallorca-beach-live)"
+
+EXTRA_CAMERAS = [
+    {
+        "key": "sa-rapita-club",
+        "name": "Sa Ràpita · Club Nàutic / Arenal",
+        "region": "Migjorn",
+        "provider": "Club Nàutic Sa Ràpita · WorldCam",
+        "mode": "external",
+        "param": "https://es.worldcam.eu/webcams/europe/spain/29036-mayorca-sa-rapita-arenal-de-sa-rapita",
+        "url": "https://es.worldcam.eu/webcams/europe/spain/29036-mayorca-sa-rapita-arenal-de-sa-rapita"
+    }
+]
 
 SPECIAL_PROBES = {
     "sa-rapita-club": {
@@ -31,6 +42,7 @@ def load_cameras():
             "key": a[0], "name": a[1], "region": a[2], "provider": a[3],
             "mode": a[4], "param": a[5], "url": a[6]
         })
+    cams.extend(EXTRA_CAMERAS)
     return cams
 
 
@@ -74,8 +86,7 @@ def check_camera(cam):
             return None, "Respuesta accesible pero no concluyente"
 
         if mode == "youtube":
-            url = cam["url"]
-            code, ctype, body = request(url, 1_000_000)
+            code, ctype, body = request(cam["url"], 1_000_000)
             if code >= 400:
                 return False, f"HTTP {code}"
             text = body.decode("utf-8", "ignore").lower()
@@ -92,10 +103,8 @@ def check_camera(cam):
             ]
             if any(x in text for x in live_markers):
                 return True, "YouTube Live detectado"
-            # Reachable video but live state could not be proven without YouTube Data API.
             return None, "Vídeo accesible; estado LIVE no concluyente"
 
-        # External provider: mark online only when its webcam/source page is reachable.
         code, ctype, body = request(cam["url"], 500_000)
         if code >= 400:
             return False, f"HTTP {code}"
@@ -146,7 +155,6 @@ def main():
         if cam["key"] in SPECIAL_PROBES:
             entries[cam["key"]]["source"] = SPECIAL_PROBES[cam["key"]]["url"]
 
-    # Keep historical entries for cameras no longer in the catalogue, but mark them unknown.
     current = {c["key"] for c in cameras}
     for key, entry in list(entries.items()):
         if key not in current:
