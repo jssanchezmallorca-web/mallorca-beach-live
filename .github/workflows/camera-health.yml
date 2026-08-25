@@ -1,0 +1,36 @@
+name: Check BEACH CAM cameras
+
+on:
+  schedule:
+    - cron: '17 4 */2 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  check-cameras:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check camera health
+        run: python scripts/check_cameras.py
+
+      - name: Save status
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- camera-status.json; then
+            echo "No status changes"
+          else
+            git add camera-status.json
+            git commit -m "Update camera health status"
+            git push
+          fi
