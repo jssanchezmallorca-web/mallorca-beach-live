@@ -2,9 +2,9 @@
   "rules": {
     ".read": "auth != null && auth.token.email === 'MASTER_EMAIL'",
     "locations": {
-      "$uid": {
-        ".write": "auth != null && auth.uid === $uid",
-        ".validate": "newData.hasChildren(['label','lat','lng','updatedAt']) && newData.child('lat').isNumber() && newData.child('lng').isNumber() && newData.child('label').isString() && newData.child('label').val().length <= 40"
+      "$deviceId": {
+        ".write": "auth != null && auth.token.email === 'TRACKER_EMAIL'",
+        ".validate": "newData.hasChildren(['label','lat','lng','updatedAt']) && newData.child('lat').isNumber() && newData.child('lng').isNumber() && newData.child('lat').val() >= -90 && newData.child('lat').val() <= 90 && newData.child('lng').val() >= -180 && newData.child('lng').val() <= 180 && newData.child('label').isString() && newData.child('label').val().length <= 40"
       }
     }
   }
