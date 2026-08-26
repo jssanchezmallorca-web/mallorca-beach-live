@@ -1,14 +1,17 @@
 (function(){
   const cfg=window.BEACH_CAM_FIREBASE||{};
   const state={ready:false,app:null,auth:null,db:null,uid:null,lastSent:0,lastLat:null,lastLng:null,watch:null,sending:false};
-  const PENDING='bc-location-pending',APPROVED='bc-location-approved';
+  const PENDING='bc-location-pending',APPROVED='bc-location-approved',DEVICE_LABEL='bc-device-label',DEVICE_OWNER='bc-device-owner';
   function configured(){return !!(cfg.enabled&&cfg.firebaseConfig&&cfg.firebaseConfig.apiKey&&cfg.firebaseConfig.databaseURL)}
   function approved(){return localStorage.getItem(APPROVED)==='1'}
   function cookie(name){const m=document.cookie.match(new RegExp('(?:^|; )'+name.replace(/([.$?*|{}()\[\]\\\/\+^])/g,'\\$1')+'=([^;]*)'));return m?decodeURIComponent(m[1]):''}
   function saveJoin(v){if(!v)return;localStorage.setItem('bc-family-join',v);document.cookie=`bc-family-join=${encodeURIComponent(v)}; Max-Age=31536000; Path=/; SameSite=Lax; Secure`}
   function joinKey(){const q=new URLSearchParams(location.search).get('join');if(q){saveJoin(q);try{history.replaceState({},'',location.pathname+location.hash)}catch{}}return q||localStorage.getItem('bc-family-join')||cookie('bc-family-join')||''}
-  function platform(){const u=navigator.userAgent||'';if(/iPhone/i.test(u))return'iPhone';if(/iPad/i.test(u))return'iPad';if(/Android/i.test(u))return'Android';if(/Windows/i.test(u))return'Windows';if(/Macintosh|Mac OS/i.test(u))return'Mac';return'Dispositivo'}
-  function automaticLabel(){return `${platform()} ${String(state.uid||'').slice(-4).toUpperCase()}`.trim()}
+  function deviceBase(){const u=navigator.userAgent||'';const samsung=(u.match(/SM-S(911|916|918)[A-Z0-9]*/i)||[])[1];if(samsung==='911')return'S23';if(samsung==='916')return'S23+';if(samsung==='918')return'S23 Ultra';if(/iPhone/i.test(u))return'iPhone';if(/iPad/i.test(u))return'iPad';if(/Android/i.test(u))return'Android';if(/Windows/i.test(u))return'PC';if(/Macintosh|Mac OS/i.test(u))return'Mac';return'Dispositivo'}
+  function cleanName(v){return String(v||'').trim().replace(/\s+/g,' ').slice(0,32)}
+  function savedDeviceLabel(){return cleanName(localStorage.getItem(DEVICE_LABEL)||'')}
+  function ensureDeviceLabel(interactive){let label=savedDeviceLabel();if(label)return label;let owner=cleanName(localStorage.getItem(DEVICE_OWNER)||'');if(!owner&&interactive){owner=cleanName(prompt('¿De quién es este dispositivo?\nEjemplo: Pilar o Jimmy')||'');if(owner)localStorage.setItem(DEVICE_OWNER,owner)}if(owner){label=`${deviceBase()} de ${owner}`;localStorage.setItem(DEVICE_LABEL,label);return label}return deviceBase()}
+  function automaticLabel(){return ensureDeviceLabel(false)||`${deviceBase()} ${String(state.uid||'').slice(-4).toUpperCase()}`.trim()}
   function normalize(coords){return{lat:Number(coords.latitude),lng:Number(coords.longitude),accuracy:Number(coords.accuracy||0),heading:Number.isFinite(coords.heading)?Number(coords.heading):null,speed:Number.isFinite(coords.speed)?Number(coords.speed):null,capturedAt:Date.now()}}
   function savePending(p){try{localStorage.setItem(PENDING,JSON.stringify(p))}catch{}}
   function pending(){try{return JSON.parse(localStorage.getItem(PENDING)||'null')}catch{return null}}
@@ -19,13 +22,13 @@
   async function updateLocation(coords){if(!configured()||!coords||!joinKey()||!approved())return false;const p=normalize(coords);savePending(p);const now=Date.now();if(now-state.lastSent<12000&&!movedEnough(p.lat,p.lng))return true;if(!navigator.onLine)return false;return sendPoint(p)}
   async function flushPending(){if(!configured()||!joinKey()||!approved()||!navigator.onLine)return false;const p=pending();return p?sendPoint(p):true}
   function start(){if(!configured()||state.watch!=null||!navigator.geolocation||!approved()||!joinKey())return false;state.watch=navigator.geolocation.watchPosition(p=>updateLocation(p.coords),e=>console.warn('BEACH CAM family GPS',e),{enableHighAccuracy:true,maximumAge:30000,timeout:15000});flushPending();return true}
-  function grant(){localStorage.setItem(APPROVED,'1');setTimeout(start,0)}
+  function grant(){ensureDeviceLabel(true);localStorage.setItem(APPROVED,'1');setTimeout(start,0)}
   function defer(){localStorage.removeItem(APPROVED)}
-  ['allowLocation','locateTop','locateMap','locateNear'].forEach(id=>document.getElementById(id)?.addEventListener('click',grant));
+  ['allowLocation','locateTop','locateMap','locateNear','camperGps'].forEach(id=>document.getElementById(id)?.addEventListener('click',grant));
   document.getElementById('later')?.addEventListener('click',defer);
   const timer=setInterval(()=>{if(start())clearInterval(timer)},1500);
   window.addEventListener('pageshow',()=>{start();flushPending()});
   window.addEventListener('online',flushPending);
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')flushPending()});
-  window.BeachCamTracking={configured,init,updateLocation,start,joinKey,flushPending,approved};
+  window.BeachCamTracking={configured,init,updateLocation,start,joinKey,flushPending,approved,deviceLabel:()=>ensureDeviceLabel(false),setDeviceOwner:n=>{n=cleanName(n);if(!n)return'';localStorage.setItem(DEVICE_OWNER,n);const v=`${deviceBase()} de ${n}`;localStorage.setItem(DEVICE_LABEL,v);return v}};
 })();
