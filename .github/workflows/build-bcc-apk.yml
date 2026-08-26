@@ -5,8 +5,6 @@ on:
   push:
     paths:
       - 'android-bcc/**'
-      - 'family/share-icon.png'
-      - 'family/icon-512.png'
       - '.github/workflows/build-bcc-apk.yml'
 
 permissions:
@@ -35,18 +33,6 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
-
-      - name: Prepare valid launcher icon
-        run: |
-          python3 -m pip install --quiet pillow
-          mkdir -p android-bcc/app/src/main/res/drawable
-          python3 - <<'PY'
-          from PIL import Image
-          src = Image.open('family/icon-512.png').convert('RGBA')
-          src.save('android-bcc/app/src/main/res/drawable/app_icon.png', format='PNG', optimize=False)
-          print(src.size, src.mode)
-          PY
-          file android-bcc/app/src/main/res/drawable/app_icon.png
 
       - name: Generate release signing key
         run: |
