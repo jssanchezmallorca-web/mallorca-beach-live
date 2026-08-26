@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
 }
 
+def releaseKeystore = System.getenv('BCC_KEYSTORE')
+
 android {
     namespace 'com.beachcamcamper.mallorca'
     compileSdk 35
@@ -10,23 +12,27 @@ android {
         applicationId 'com.beachcamcamper.mallorca'
         minSdk 26
         targetSdk 35
-        versionCode 2
-        versionName '1.0.1'
+        versionCode 3
+        versionName '1.0.2'
     }
 
     signingConfigs {
-        release {
-            storeFile file(System.getenv('BCC_KEYSTORE') ?: '../bcc-release.jks')
-            storePassword System.getenv('BCC_STORE_PASSWORD') ?: 'BeachCamCamper2026!'
-            keyAlias System.getenv('BCC_KEY_ALIAS') ?: 'beachcamcamper'
-            keyPassword System.getenv('BCC_KEY_PASSWORD') ?: 'BeachCamCamper2026!'
+        if (releaseKeystore) {
+            release {
+                storeFile file(releaseKeystore)
+                storePassword System.getenv('BCC_STORE_PASSWORD')
+                keyAlias System.getenv('BCC_KEY_ALIAS')
+                keyPassword System.getenv('BCC_KEY_PASSWORD')
+            }
         }
     }
 
     buildTypes {
         release {
             minifyEnabled false
-            signingConfig signingConfigs.release
+            if (releaseKeystore) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 }
