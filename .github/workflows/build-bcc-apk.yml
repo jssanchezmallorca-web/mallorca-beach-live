@@ -40,31 +40,53 @@ jobs:
           mkdir -p android-bcc/app/src/main/res/drawable
           cp family/share-icon.png android-bcc/app/src/main/res/drawable/app_icon.png
 
-      - name: Build real Android APK
+      - name: Generate release signing key
+        run: |
+          keytool -genkeypair -v \
+            -keystore "$GITHUB_WORKSPACE/android-bcc/bcc-release.jks" \
+            -storepass 'BeachCamCamper2026!' \
+            -keypass 'BeachCamCamper2026!' \
+            -alias beachcamcamper \
+            -keyalg RSA -keysize 3072 -validity 10000 \
+            -dname 'CN=BEACH CAM CAMPER, OU=Family, O=BEACH CAM CAMPER, L=Mallorca, ST=Illes Balears, C=ES'
+
+      - name: Build signed Android release APK
         working-directory: android-bcc
-        run: gradle --no-daemon assembleDebug
+        env:
+          BCC_KEYSTORE: ${{ github.workspace }}/android-bcc/bcc-release.jks
+          BCC_STORE_PASSWORD: BeachCamCamper2026!
+          BCC_KEY_ALIAS: beachcamcamper
+          BCC_KEY_PASSWORD: BeachCamCamper2026!
+        run: gradle --no-daemon assembleRelease
+
+      - name: Verify APK signature
+        run: |
+          apksigner verify --verbose --print-certs android-bcc/app/build/outputs/apk/release/app-release.apk
 
       - name: Publish APK file
         run: |
           mkdir -p downloads
-          cp android-bcc/app/build/outputs/apk/debug/app-debug.apk downloads/BEACH-CAM-CAMPER.apk
-          ls -lh downloads/BEACH-CAM-CAMPER.apk
+          cp android-bcc/app/build/outputs/apk/release/app-release.apk downloads/BEACH-CAM-CAMPER.apk
+          sha256sum downloads/BEACH-CAM-CAMPER.apk > downloads/BEACH-CAM-CAMPER.apk.sha256
+          ls -lh downloads/BEACH-CAM-CAMPER.apk downloads/BEACH-CAM-CAMPER.apk.sha256
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: BEACH-CAM-CAMPER-APK
-          path: downloads/BEACH-CAM-CAMPER.apk
+          name: BEACH-CAM-CAMPER-RELEASE-APK
+          path: |
+            downloads/BEACH-CAM-CAMPER.apk
+            downloads/BEACH-CAM-CAMPER.apk.sha256
           if-no-files-found: error
 
       - name: Commit APK for direct download
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add downloads/BEACH-CAM-CAMPER.apk
+          git add downloads/BEACH-CAM-CAMPER.apk downloads/BEACH-CAM-CAMPER.apk.sha256
           if git diff --cached --quiet; then
             echo 'APK unchanged'
           else
-            git commit -m 'Build BEACH CAM CAMPER Android APK [skip ci]'
+            git commit -m 'Build BEACH CAM CAMPER signed release APK [skip ci]'
             git push
           fi
