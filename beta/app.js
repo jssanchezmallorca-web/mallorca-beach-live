@@ -3,6 +3,71 @@ const S={view:'cams',region:'Todas',q:'',favOnly:false,pos:null,map:null,userMar
 const F=new Set(JSON.parse(localStorage.getItem('bc-favs')||'[]'));
 const REG=['Todas','Norte','Llevant','Ponent','Palma','Migjorn'];
 const WC={};
+const VISIONA_FRAMES={
+ 'calasantvicenc':'VIC-CAM1','estrenc':'EMQ-CAM2','desmarques':'EMQ-CAM1','estanys':'EMQ-CAM3',
+ 'badia-alcudia-mola':'MLA-CAM1','badia-pollenca-mola':'MLA-CAM2','cala-llamp':'ANX-CAM2',
+ 'cala-romantica-visiona':'CRM-CAM1','cales-mallorca':'ECL-CAM2','badia-campos-sarapita':'SRF-CAM1',
+ 'canyamel-visiona':'CML-CAM1','calamillor-calabona-visiona':'SRV-CAM2'
+};
+const LIVE_EMBEDS={
+ 'sonserra':'https://rtsp.me/embed/b378874i/',
+ 'calasantanyi':'https://webtvfc.feratel.com/webtv/?design=v5&cam=15115&lg=es&pg=DA7D2F22-8600-464D-9D4F-CDB04014A6C5'
+};
+let PREVIEW_OBSERVER=null;
+const PREVIEW_TIMERS=new WeakMap();
+function clearMini(el){
+ const t=PREVIEW_TIMERS.get(el);if(t){clearInterval(t);PREVIEW_TIMERS.delete(el)}
+ const f=el.querySelector('iframe');if(f)f.src='about:blank';
+ el.dataset.loaded='';
+}
+function loadMini(el,c){
+ if(el.dataset.loaded==='1')return;el.dataset.loaded='1';el.innerHTML='';
+ let n;
+ if(c.mode==='youtube'){
+  n=document.createElement('iframe');
+  n.src=`https://www.youtube-nocookie.com/embed/${c.video}?autoplay=1&mute=1&controls=0&playsinline=1&rel=0&modestbranding=1`;
+  n.allow='autoplay; encrypted-media; picture-in-picture';n.tabIndex=-1;
+ }else if(c.mode==='ipcam'){
+  n=document.createElement('iframe');
+  n.src=`https://g0.ipcamlive.com/player/player.php?alias=${c.alias}&autoplay=1&mute=1`;
+  n.allow='autoplay';n.tabIndex=-1;
+ }else if(c.mode==='mjpeg'){
+  n=document.createElement('img');n.src=c.url;n.alt=c.name;
+ }else if(VISIONA_FRAMES[c.key]){
+  n=document.createElement('img');n.alt=c.name;
+  const refresh=()=>{n.src=`https://visiona.conectabalear.com/preview/${VISIONA_FRAMES[c.key]}/?t=${Date.now()}`};
+  refresh();PREVIEW_TIMERS.set(el,setInterval(refresh,4000));
+ }else if(LIVE_EMBEDS[c.key]){
+  n=document.createElement('iframe');n.src=LIVE_EMBEDS[c.key];n.allow='autoplay; encrypted-media; picture-in-picture';n.tabIndex=-1;
+ }else{
+  const t=thumb(c);
+  if(t){n=document.createElement('img');n.src=t;n.alt=c.name}
+  else{n=document.createElement('div');n.className='ph';n.innerHTML='🌊<br>'+esc(c.name)}
+ }
+ if(n)n.classList.add('mini-media');el.appendChild(n);
+}
+function makeMini(c){const d=document.createElement('div');d.className='live-mini';d.__cam=c;return d}
+function observeMinis(root){
+ if(PREVIEW_OBSERVER)PREVIEW_OBSERVER.disconnect();
+ PREVIEW_OBSERVER=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)loadMini(e.target,e.target.__cam);else clearMini(e.target)}),{rootMargin:'180px 0px'});
+ root.querySelectorAll('.live-mini').forEach(x=>PREVIEW_OBSERVER.observe(x));
+}
+function liveNode(c){
+ if(c.mode==='youtube'||c.mode==='ipcam'){
+  const f=document.createElement('iframe');
+  f.src=c.mode==='youtube'?`https://www.youtube-nocookie.com/embed/${c.video}?autoplay=1&playsinline=1&rel=0`:`https://g0.ipcamlive.com/player/player.php?alias=${c.alias}&autoplay=1`;
+  f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;return f
+ }
+ if(c.mode==='mjpeg'){const i=document.createElement('img');i.src=c.url;return i}
+ if(VISIONA_FRAMES[c.key]){
+  const box=document.createElement('div');box.className='visiona-live';
+  const i=document.createElement('img');i.alt=c.name;box.appendChild(i);
+  const refresh=()=>{i.src=`https://visiona.conectabalear.com/preview/${VISIONA_FRAMES[c.key]}/?t=${Date.now()}`};
+  refresh();box._timer=setInterval(refresh,2500);return box
+ }
+ if(LIVE_EMBEDS[c.key]){const f=document.createElement('iframe');f.src=LIVE_EMBEDS[c.key];f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;return f}
+ const d=document.createElement('div');d.className='external';d.innerHTML=`<h2>${esc(c.name)}</h2><p>Este proveedor no permite incrustar su directo dentro de otra web. Usa “Original” para verlo en directo.</p>`;return d
+}
 function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function save(){localStorage.setItem('bc-favs',JSON.stringify([...F]))}
 function thumb(c){if(c.mode==='youtube')return`https://i.ytimg.com/vi/${c.video}/hqdefault.jpg`;if(c.mode==='ipcam')return`https://g0.ipcamlive.com/player/snapshot.php?alias=${c.alias}&t=${Math.floor(Date.now()/300000)}`;return''}
@@ -10,10 +75,10 @@ function cams(){let q=S.q.toLowerCase().trim();return CAMERAS.filter(c=>(S.regio
 function drawFilters(){let e=$('#filters');e.innerHTML='';REG.forEach(r=>{let b=document.createElement('button');b.className='chip'+(S.region===r&&!S.favOnly?' on':'');b.textContent=r;b.onclick=()=>{S.region=r;S.favOnly=false;drawFilters();drawCams()};e.appendChild(b)});let f=document.createElement('button');f.className='chip'+(S.favOnly?' on':'');f.textContent='★ Favoritas';f.onclick=()=>{S.favOnly=!S.favOnly;drawFilters();drawCams()};e.appendChild(f)}
 function camHealth(c){return window.BEACH_CAM_HEALTH?.cameras?.[c.key]?.status||'unknown'}
 function camHealthLabel(c){const s=camHealth(c);return s==='online'?['online','🟢 ONLINE']:s==='offline'?['offline','🔴 OFFLINE']:['unknown','⚪ SIN CONFIRMAR']}
-function drawCams(){let list=cams(),g=$('#grid');$('#count').textContent=`${list.length} / ${CAMERAS.length}`;g.innerHTML='';list.forEach(c=>{let card=document.createElement('article');card.className='card';let v=document.createElement('div');v.className='visual';let t=thumb(c);if(t){let i=document.createElement('img');i.loading='lazy';i.src=t;i.alt=c.name;i.onerror=()=>{i.remove();v.insertAdjacentHTML('afterbegin',`<div class="ph">🌊<br>${esc(c.name)}</div>`)};v.appendChild(i)}else v.innerHTML=`<div class="ph">🌊<br>${esc(c.name)}</div>`;let hs=camHealthLabel(c);v.insertAdjacentHTML('beforeend',`<span class="badge live ${hs[0]}">${hs[1]}</span><span class="badge prov">${esc(c.provider)}</span>`);let p=document.createElement('button');p.className='play';p.onclick=()=>openCam(c);v.appendChild(p);let f=document.createElement('button');f.className='fav'+(F.has(c.key)?' on':'');f.textContent=F.has(c.key)?'★':'☆';f.onclick=e=>{e.stopPropagation();F.has(c.key)?F.delete(c.key):F.add(c.key);save();drawCams()};v.appendChild(f);let info=document.createElement('div');info.className='info';info.innerHTML=`<div class="name">${esc(c.name)}</div><div class="meta"><span>${esc(c.region)}</span><span>${camHealthLabel(c)[1]}</span></div>`;card.append(v,info);g.appendChild(card)})}
-function camNode(c){if(c.mode==='youtube'||c.mode==='ipcam'){let f=document.createElement('iframe');f.src=c.mode==='youtube'?`https://www.youtube-nocookie.com/embed/${c.video}?autoplay=1&playsinline=1&rel=0`:`https://g0.ipcamlive.com/player/player.php?alias=${c.alias}&autoplay=1`;f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;return f}if(c.mode==='mjpeg'){let i=document.createElement('img');i.src=c.url;return i}let d=document.createElement('div');d.className='external';d.innerHTML=`<h2>${esc(c.name)}</h2><p>Este proveedor debe abrirse en su página original.</p><a class="btn primary" target="_blank" rel="noopener" href="${esc(c.url)}">Abrir directo ↗</a>`;return d}
+function drawCams(){let list=cams(),g=$('#grid');$('#count').textContent=`${list.length} / ${CAMERAS.length}`;g.innerHTML='';list.forEach(c=>{let card=document.createElement('article');card.className='card';let v=document.createElement('div');v.className='visual';v.appendChild(makeMini(c));let hs=camHealthLabel(c);v.insertAdjacentHTML('beforeend',`<span class="badge live ${hs[0]}">${hs[1]}</span><span class="badge prov">${esc(c.provider)}</span>`);let p=document.createElement('button');p.className='play';p.setAttribute('aria-label','Abrir '+c.name+' a pantalla completa');p.onclick=()=>openCam(c);v.appendChild(p);let f=document.createElement('button');f.className='fav'+(F.has(c.key)?' on':'');f.textContent=F.has(c.key)?'★':'☆';f.onclick=e=>{e.stopPropagation();F.has(c.key)?F.delete(c.key):F.add(c.key);save();drawCams()};v.appendChild(f);let info=document.createElement('div');info.className='info';info.innerHTML=`<div class="name">${esc(c.name)}</div><div class="meta"><span>${esc(c.region)}</span><span>${camHealthLabel(c)[1]}</span></div>`;card.append(v,info);g.appendChild(card)});observeMinis(g)}
+function camNode(c){return liveNode(c)}
 function openCam(c){if(!c)return;if(!$('#viewerModal').classList.contains('open'))history.pushState({beachCam:'viewer'},'');$('#viewerTitle').textContent=c.name;$('#original').href=c.url;let v=$('#viewer');v.innerHTML='';v.appendChild(camNode(c));let m=$('#viewerModal');m.classList.add('open');m.style.display='flex'}
-function closeCam(){let m=$('#viewerModal');m.classList.remove('open');m.style.display='';$('#viewer').innerHTML=''}
+function closeCam(){let m=$('#viewerModal');m.classList.remove('open');m.style.display='';let v=$('#viewer');v.querySelectorAll('.visiona-live').forEach(x=>{if(x._timer)clearInterval(x._timer)});v.innerHTML=''}
 function beach(k){return BEACHES.find(b=>b.key===k)}
 function beachCams(b){return b?(b.cameraKeys||[]).map(k=>CAMERAS.find(c=>c.key===k)).filter(Boolean):[]}
 function showBeachCameras(b){let list=beachCams(b);if(!b)return;if(!list.length){$('#sheetTitle').textContent=`${b.name||'Playa'} · cámaras`;$('#sheetList').innerHTML='<div class="camera-btn"><span>No hay cámaras asociadas.</span></div>';let s=$('#cameraSheet');s.classList.add('open');s.style.display='flex';return}if(list.length===1){openCam(list[0]);return}$('#sheetTitle').textContent=`${b.name} · cámaras`;let e=$('#sheetList');e.innerHTML='';list.forEach(c=>{let x=document.createElement('button');x.className='camera-btn';x.innerHTML=`<span><strong>${esc(c.name)}</strong><br><small>${esc(c.provider)}</small></span><span>Ver ▶</span>`;x.onclick=()=>{let s=$('#cameraSheet');s.classList.remove('open');s.style.display='';openCam(c)};e.appendChild(x)});let s=$('#cameraSheet');s.classList.add('open');s.style.display='flex'}
