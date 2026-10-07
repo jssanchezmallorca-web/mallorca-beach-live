@@ -6,3 +6,6 @@ header{background:#16b9c4f2;border-bottom-color:#0d9ca7}.logo{width:44px;height:
 
 
 .logo{background:url('../mallorca-header-icon.svg?v=24') center/contain no-repeat!important}.logo:before{display:none!important}
+
+/* v30 live camera miniatures */
+.live-mini{position:absolute;inset:0;z-index:0;background:#071923;overflow:hidden}.live-mini .mini-media,.live-mini iframe,.live-mini img{width:100%;height:100%;border:0;object-fit:cover;display:block}.live-mini iframe{pointer-events:none}.visual .badge{z-index:3}.visual .play{z-index:1}.visual .fav{z-index:4}.visiona-live{width:100%;height:100%;display:grid;place-items:center;background:#000}.visiona-live img{width:100%;height:100%;object-fit:contain}.viewer .visiona-live{width:100%;height:100%}
