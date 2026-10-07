@@ -1,4 +1,4 @@
-const VERSION='beach-cam-beta-v15';
+const VERSION='beach-cam-beta-v16';
 const STATIC=['./','./index.html','./install.html','./style.css?v=15','./app.js?v=15','./beaches.js?v=15','./manifest.webmanifest?v=15','./firebase-config.js?v=1','./texts.js?v=3','./config-text.js?v=2','./runtime-notices.js?v=1','./tracking.js?v=5','./master.html','./master.js?v=4','./master-extra-texts.js?v=1'];
 const LIVE_DATA=new Set(['/mallorca-beach-live/cameras.js','/mallorca-beach-live/camera-health.js']);
 self.addEventListener('install',e=>{e.waitUntil(caches.open(VERSION).then(c=>c.addAll(STATIC)));self.skipWaiting()});
