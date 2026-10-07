@@ -1,5 +1,5 @@
-const VERSION='beach-cam-beta-v17';
-const STATIC=['./','./index.html','./install.html','./style.css?v=17','./app.js?v=17','./beaches.js?v=17','./manifest.webmanifest?v=17','../beachcam-icon.svg?v=17','./firebase-config.js?v=1','./texts.js?v=3','./config-text.js?v=2','./runtime-notices.js?v=1','./tracking.js?v=5','./master.html','./master.js?v=4','./master-extra-texts.js?v=1'];
+const VERSION='beach-cam-beta-v18';
+const STATIC=['./','./index.html','./install.html','./style.css?v=18','./app.js?v=18','./beaches.js?v=18','./manifest.webmanifest?v=18','../beachcam-icon.svg?v=18','./firebase-config.js?v=1','./texts.js?v=3','./config-text.js?v=2','./runtime-notices.js?v=1','./tracking.js?v=5','./master.html','./master.js?v=4','./master-extra-texts.js?v=1'];
 const LIVE_DATA=new Set(['/mallorca-beach-live/cameras.js','/mallorca-beach-live/camera-health.js']);
 self.addEventListener('install',e=>{e.waitUntil(caches.open(VERSION).then(c=>c.addAll(STATIC)));self.skipWaiting()});
 self.addEventListener('activate',e=>e.waitUntil((async()=>{for(const k of await caches.keys())if(k!==VERSION)await caches.delete(k);await self.clients.claim()})()));
