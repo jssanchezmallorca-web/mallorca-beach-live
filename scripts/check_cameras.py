@@ -39,11 +39,18 @@ def probe(c):
     try:
         mode=c['mode']
         if mode=='youtube':
-            vid=c['param']; status,ct,data=get('https://www.youtube.com/watch?v='+vid)
+            vid=c['param']
+            try:
+                os,oct,odata=get('https://www.youtube.com/oembed?format=json&url=https://www.youtube.com/watch?v='+vid,100000)
+                if os!=200:return 'offline',f'YouTube oEmbed HTTP {os}'
+            except urllib.error.HTTPError as oe:
+                if oe.code in (400,401,403,404):return 'offline',f'YouTube no disponible (oEmbed {oe.code})'
+            status,ct,data=get('https://www.youtube.com/watch?v='+vid)
             s=data.decode('utf-8','ignore')
             if status!=200:return 'unknown',f'YouTube HTTP {status}; no concluyente'
             if '"isLiveNow":true' in s or '"isLive":true' in s:return 'online','YouTube live detectado'
             if 'LIVE_STREAM_OFFLINE' in s or ('"isLiveContent":true' in s and '"isLiveNow":false' in s):return 'offline','YouTube indica directo sin emisión'
+            if 'Video unavailable' in s or 'Este vídeo no está disponible' in s:return 'offline','YouTube indica vídeo no disponible'
             return 'unknown','YouTube accesible; estado del directo no confirmable'
         if mode=='ipcam':
             alias=c['param']; status,ct,data=get(f'https://g0.ipcamlive.com/player/snapshot.php?alias={alias}',200000)
