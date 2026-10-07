@@ -24,7 +24,7 @@ const BEACHES = [
   {key:'cala-santanyi',name:'Cala Santanyí',region:'Migjorn',lat:39.33057,lng:3.14630,shoreBearing:315,cameraKeys:['calasantanyi']},
   {key:'es-trenc',name:'Es Trenc',region:'Migjorn',lat:39.3533,lng:2.9879,shoreBearing:0,cameraKeys:['estrenc']},
   {key:'platja-des-marques',name:'Platja des Marquès',region:'Migjorn',lat:39.32712,lng:2.98998,shoreBearing:0,cameraKeys:['desmarques']},
-  {key:'platja-estanys',name:'Platja Estanys',region:'Migjorn',lat:39.32692,lng:2.98922,shoreBearing:330,cameraKeys:['estanys']}
+  {key:'platja-estanys',name:'Platja Estanys',region:'Migjorn',lat:39.32692,lng:2.98922,shoreBearing:330,cameraKeys:['estanys']},
   {key:'cala-llamp',name:'Cala Llamp',region:'Ponent',lat:39.5456,lng:2.3797,shoreBearing:250,cameraKeys:['cala-llamp']},
   {key:'cala-romantica',name:'Cala Romàntica',region:'Llevant',lat:39.5217,lng:3.3148,shoreBearing:105,cameraKeys:['cala-romantica-visiona']},
   {key:'cales-mallorca',name:'Cales de Mallorca',region:'Llevant',lat:39.4695,lng:3.2798,shoreBearing:110,cameraKeys:['cales-mallorca']},
