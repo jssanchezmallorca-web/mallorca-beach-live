@@ -12,7 +12,8 @@ const VISIONA_FRAMES={
 const LIVE_EMBEDS={
  'sonserra':'https://rtsp.me/embed/b378874i/',
  'calasantanyi':'https://webtvfc.feratel.com/webtv/?design=v5&cam=15115&lg=es&pg=DA7D2F22-8600-464D-9D4F-CDB04014A6C5',
- 'cala-bona-hotel':'https://rtsp.me/embed/5tYtr3zD/'
+ 'cala-bona-hotel':'https://rtsp.me/embed/5tYtr3zD/',
+ 'calamillor-seven':'https://www.youtube.com/embed/live_stream?channel=UC3hlksRo6qSMbAK2CPTs9_w&autoplay=1&mute=1&playsinline=1&rel=0'
 };
 let PREVIEW_OBSERVER=null;
 const PREVIEW_TIMERS=new WeakMap();
