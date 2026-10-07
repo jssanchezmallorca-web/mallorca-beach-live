@@ -1,5 +1,5 @@
-const VERSION='beach-cam-beta-v20';
-const STATIC=['./','./index.html','./install.html','./style.css?v=20','./app.js?v=18','./beaches.js?v=18','./manifest.webmanifest?v=18','../beachcam-icon.svg?v=18','./firebase-config.js?v=1','./texts.js?v=3','./config-text.js?v=2','./runtime-notices.js?v=1','./tracking.js?v=5','./master.html','./master.js?v=4','./master-extra-texts.js?v=1',"../update-bridge.js?v=19",'../mallorca-header-icon.svg?v=20'];
+const VERSION='beach-cam-beta-v21';
+const STATIC=['./','./index.html','./install.html','./style.css?v=21','./app.js?v=18','./beaches.js?v=18','./manifest.webmanifest?v=18','../beachcam-icon.svg?v=18','./firebase-config.js?v=1','./texts.js?v=3','./config-text.js?v=2','./runtime-notices.js?v=1','./tracking.js?v=5','./master.html','./master.js?v=4','./master-extra-texts.js?v=1',"../update-bridge.js?v=21",'../mallorca-header-icon.svg?v=20'];
 const LIVE_DATA=new Set(['/mallorca-beach-live/cameras.js','/mallorca-beach-live/camera-health.js']);
 self.addEventListener('install',e=>{e.waitUntil(caches.open(VERSION).then(c=>c.addAll(STATIC)));self.skipWaiting()});
 self.addEventListener('activate',e=>e.waitUntil((async()=>{for(const k of await caches.keys())if(k!==VERSION)await caches.delete(k);await self.clients.claim()})()));
