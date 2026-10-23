@@ -34,10 +34,10 @@ window.BEACH_CAM_HEALTH = {
       "note": "YouTube accesible; estado del directo no confirmable"
     },
     "muro-esperanza": {
-      "status": "offline",
-      "failures": 7,
+      "status": "unknown",
+      "failures": 0,
       "checkedAt": "2026-10-21T09:23:25+00:00",
-      "note": "YouTube no disponible (oEmbed 404)"
+      "note": "YouTube oEmbed 404 no concluyente; emisión pendiente de verificar"
     },
     "pollensa-sailsurf": {
       "status": "online",
@@ -70,10 +70,10 @@ window.BEACH_CAM_HEALTH = {
       "note": "Snapshot IPCam válido"
     },
     "calagat-beach": {
-      "status": "offline",
-      "failures": 7,
+      "status": "unknown",
+      "failures": 0,
       "checkedAt": "2026-10-21T09:23:25+00:00",
-      "note": "YouTube no disponible (oEmbed 404)"
+      "note": "YouTube oEmbed 404 no concluyente; emisión pendiente de verificar"
     },
     "calamesquida": {
       "status": "online",
@@ -124,76 +124,76 @@ window.BEACH_CAM_HEALTH = {
       "note": "Snapshot IPCam válido"
     },
     "calafornells-bay": {
-      "status": "offline",
-      "failures": 7,
+      "status": "unknown",
+      "failures": 0,
       "checkedAt": "2026-10-21T09:23:25+00:00",
-      "note": "YouTube no disponible (oEmbed 404)"
+      "note": "YouTube oEmbed 404 no concluyente; emisión pendiente de verificar"
     },
     "calafornells-ptz": {
-      "status": "offline",
-      "failures": 7,
+      "status": "unknown",
+      "failures": 0,
       "checkedAt": "2026-10-21T09:23:25+00:00",
-      "note": "YouTube no disponible (oEmbed 404)"
+      "note": "Enlace PTZ corregido; emisión actual pendiente de verificar"
     },
     "campdemar-bay": {
-      "status": "offline",
-      "failures": 7,
+      "status": "unknown",
+      "failures": 0,
       "checkedAt": "2026-10-21T09:23:25+00:00",
-      "note": "YouTube no disponible (oEmbed 404)"
+      "note": "YouTube oEmbed 404 no concluyente; emisión pendiente de verificar"
     },
     "campdemar-roca": {
-      "status": "offline",
-      "failures": 7,
+      "status": "unknown",
+      "failures": 0,
       "checkedAt": "2026-10-21T09:23:25+00:00",
-      "note": "YouTube no disponible (oEmbed 404)"
+      "note": "YouTube oEmbed 404 no concluyente; emisión pendiente de verificar"
     },
     "magaluf": {
-      "status": "offline",
-      "failures": 7,
+      "status": "unknown",
+      "failures": 0,
       "checkedAt": "2026-10-21T09:23:25+00:00",
-      "note": "YouTube no disponible (oEmbed 404)"
+      "note": "YouTube oEmbed 404 no concluyente; emisión pendiente de verificar"
     },
     "peguera-palmira180": {
-      "status": "offline",
-      "failures": 7,
+      "status": "unknown",
+      "failures": 0,
       "checkedAt": "2026-10-21T09:23:25+00:00",
-      "note": "YouTube no disponible (oEmbed 404)"
+      "note": "YouTube oEmbed 404 no concluyente; emisión pendiente de verificar"
     },
     "peguera-tora": {
-      "status": "offline",
-      "failures": 7,
+      "status": "unknown",
+      "failures": 0,
       "checkedAt": "2026-10-21T09:23:25+00:00",
-      "note": "YouTube no disponible (oEmbed 404)"
+      "note": "YouTube oEmbed 404 no concluyente; emisión pendiente de verificar"
     },
     "peguera-playa5": {
-      "status": "offline",
-      "failures": 7,
+      "status": "unknown",
+      "failures": 0,
       "checkedAt": "2026-10-21T09:23:25+00:00",
-      "note": "YouTube no disponible (oEmbed 404)"
+      "note": "YouTube oEmbed 404 no concluyente; emisión pendiente de verificar"
     },
     "peguera-palmira": {
-      "status": "offline",
-      "failures": 7,
+      "status": "unknown",
+      "failures": 0,
       "checkedAt": "2026-10-21T09:23:25+00:00",
-      "note": "YouTube no disponible (oEmbed 404)"
+      "note": "YouTube oEmbed 404 no concluyente; emisión pendiente de verificar"
     },
     "peguera-pacific": {
-      "status": "offline",
-      "failures": 7,
+      "status": "unknown",
+      "failures": 0,
       "checkedAt": "2026-10-21T09:23:25+00:00",
-      "note": "YouTube no disponible (oEmbed 404)"
+      "note": "YouTube oEmbed 404 no concluyente; emisión pendiente de verificar"
     },
     "portalsvells": {
-      "status": "offline",
-      "failures": 7,
+      "status": "unknown",
+      "failures": 0,
       "checkedAt": "2026-10-21T09:23:25+00:00",
-      "note": "YouTube no disponible (oEmbed 404)"
+      "note": "YouTube oEmbed 404 no concluyente; emisión pendiente de verificar"
     },
     "santelm": {
-      "status": "offline",
-      "failures": 7,
+      "status": "unknown",
+      "failures": 0,
       "checkedAt": "2026-10-21T09:23:25+00:00",
-      "note": "YouTube no disponible (oEmbed 404)"
+      "note": "YouTube oEmbed 404 no concluyente; emisión pendiente de verificar"
     },
     "santaponsa": {
       "status": "unknown",
@@ -202,10 +202,10 @@ window.BEACH_CAM_HEALTH = {
       "note": "YouTube accesible; estado del directo no confirmable"
     },
     "sonmaties": {
-      "status": "offline",
-      "failures": 7,
+      "status": "unknown",
+      "failures": 0,
       "checkedAt": "2026-10-21T09:23:25+00:00",
-      "note": "YouTube no disponible (oEmbed 404)"
+      "note": "YouTube oEmbed 404 no concluyente; emisión pendiente de verificar"
     },
     "canpastilla": {
       "status": "unknown",
