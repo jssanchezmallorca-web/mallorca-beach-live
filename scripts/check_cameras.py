@@ -44,7 +44,7 @@ def probe(c):
                 os,oct,odata=get('https://www.youtube.com/oembed?format=json&url=https://www.youtube.com/watch?v='+vid,100000)
                 if os!=200:return 'offline',f'YouTube oEmbed HTTP {os}'
             except urllib.error.HTTPError as oe:
-                if oe.code in (400,401,403,404):return 'offline',f'YouTube no disponible (oEmbed {oe.code})'
+                if oe.code in (400,401,403,404):return 'unknown',f'YouTube oEmbed {oe.code}; no confirma que el vídeo esté caído'
             status,ct,data=get('https://www.youtube.com/watch?v='+vid)
             s=data.decode('utf-8','ignore')
             if status!=200:return 'unknown',f'YouTube HTTP {status}; no concluyente'
@@ -81,7 +81,7 @@ def main():
             status='offline' if failures>=2 else p.get('status','unknown')
         else:
             failures=0
-            status='offline' if p.get('status')=='offline' else 'unknown'
+            status='unknown'
         result[c['key']]={'status':status,'failures':failures,'checkedAt':now,'note':note}
         print(f"{c['key']}: {status} ({verdict}) - {note}")
     payload={'updatedAt':now,'cameras':result}
