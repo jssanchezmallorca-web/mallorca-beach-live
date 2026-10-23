@@ -1,11 +1,11 @@
 const BEACHES = [
   {key:'playa-muro',name:'Playa de Muro',region:'Norte',lat:39.80819,lng:3.11888,shoreBearing:225,cameraKeys:['muro-main','muro-esperanza']},
-  {key:'can-picafort',name:'Can Picafort',region:'Norte',lat:39.77010,lng:3.15043,shoreBearing:210,cameraKeys:['canpicafort']},
+  {key:'can-picafort',name:'Can Picafort',region:'Norte',lat:39.77010,lng:3.15043,shoreBearing:210,cameraKeys:['canpicafort-eix-hotel']},
   {key:'port-pollensa',name:'Port de Pollença',region:'Norte',lat:39.89514,lng:3.08011,shoreBearing:190,cameraKeys:['pollensa-sailsurf','badia-pollenca-mola']},
   {key:'alcudia-marina',name:'Sa Marina · Alcúdia',region:'Norte',lat:39.8520,lng:3.1390,shoreBearing:230,cameraKeys:['samarina','alcudia-skyline','badia-alcudia-mola']},
   {key:'son-serra',name:'Son Serra de Marina',region:'Norte',lat:39.73220,lng:3.23532,shoreBearing:220,cameraKeys:['sonserra']},
   {key:'cala-sant-vicenc',name:'Cala Sant Vicenç',region:'Norte',lat:39.92490,lng:3.06210,shoreBearing:120,cameraKeys:['calasantvicenc']},
-  {key:'cala-agulla',name:'Cala Agulla',region:'Llevant',lat:39.72267,lng:3.45295,shoreBearing:270,cameraKeys:['agulla-bay','agulla-beach','agulla-skyline','agulla-view']},
+  {key:'cala-agulla',name:'Cala Agulla',region:'Llevant',lat:39.72267,lng:3.45295,shoreBearing:270,cameraKeys:['agulla-beach']},
   {key:'cala-gat',name:'Cala Gat',region:'Llevant',lat:39.71309,lng:3.47000,shoreBearing:290,cameraKeys:['calagat-bay','calagat-beach']},
   {key:'cala-mesquida',name:'Cala Mesquida',region:'Llevant',lat:39.74437,lng:3.43385,shoreBearing:240,cameraKeys:['calamesquida']},
   {key:'cala-millor',name:'Cala Millor',region:'Llevant',lat:39.59097,lng:3.38553,shoreBearing:280,cameraKeys:['calamillor-ne','calamillor-se','calamillor-calabona-visiona']},
