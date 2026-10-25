@@ -15,7 +15,7 @@ caladomingos-145|Cala Domingos · Carrer Cala Domingos|Manacor|39.4595|3.2781|st
 palma-gayman|Palma · Mariscal Bartomeu Gayman|Palma|39.5568|2.6838|street|Gratis|1|1|warn|Calle tranquila; confirmar normas locales.|https://park4night.com/es/place/694483
 esporles-recreativa|Esporles · área recreativa|Esporles|39.6624|2.5748|parking|Gratis|1|0|warn|Acceso estrecho; mejor furgonetas y conductores con experiencia.|https://park4night.com/es/place/137083
 muro-quiet|Muro · camino tranquilo|Muro|39.744|3.027|parking|Gratis|1|0|warn|Acceso estrecho; referencia indica máximo aprox. 6 m.|https://park4night.com/es/place/587245
-muro-area|Muro · área gratuita|Muro|39.7278|3.0586|area|Gratis|1|0|ok|Área municipal con agua y vaciado; algo inclinada.|https://park4night.com/es/place/583845
+muro-area|Muro · área gratuita|Muro|39.7278|3.0586|area|Gratis|1|0|ok|Área municipal habilitada junto a Escola Graduada (Ajuntament de Muro, 29/04/2025). Agua potable y vaciado de grises/negras gratuitos según ficha y reseñas de 2026. Terreno muy inclinado; comprobar señales y tiempo máximo de estancia al llegar.|https://park4night.com/es/place/583845
 canpicafort-lidl|Can Picafort · parking junto a Lidl|Santa Margalida|39.7563|3.1574|parking|Gratis|1|0|warn|Punto conocido; revisar restricciones de >5 m en la zona.|https://park4night.com/es/place/525066
 muro-polideportivo|Muro · polideportivo|Muro|39.7296|3.0535|parking|Gratis|1|0|warn|Parking amplio y tranquilo según referencias.|https://park4night.com/es/place/182057
 calamesquida-main|Cala Mesquida · Av. Marian|Capdepera|39.7457|3.4305|parking|Gratis|1|1|warn|Muy cerca de playa; se llena de día.|https://park4night.com/es/place/303349`.trim().split('\n'));
