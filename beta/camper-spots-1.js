@@ -4,7 +4,7 @@ alcudia-ciutadella|Alcúdia · Carrer de Ciutadella|Alcúdia|39.8408|3.1388|park
 barcares|Es Barcarès · zona puerto|Alcúdia|39.862|3.1177|parking|Gratis|1|1|warn|Pernocta comunitaria reportada; revisar señales.|https://park4night.com/es/place/566883
 portpollenca|Port de Pollença · junto al puerto|Pollença|39.9095|3.0815|parking|Gratis|1|1|warn|Parking urbano; comprobar restricciones locales.|https://park4night.com/es/place/432840
 puig|Pollença · Puig de Maria|Pollença|39.8731|3.0163|parking|Gratis|1|0|warn|Puede llenarse en mercado o eventos.|https://park4night.com/es/place/72904
-sonserra|Son Serra de Marina · área camper|Santa Margalida|39.7353|3.2257|area|Pago|1|1|ok|Área específica; comprobar reserva y condiciones.|https://park4night.com/es/place/617139
+sonserra|Son Serra de Marina · área camper|Santa Margalida|39.7353|3.2257|area|Pago|1|1|ok|Área autorizada con 21 plazas. Tarifa publicada 16 €/noche; acceso y reserva mediante TripStop. Agua potable, vaciado de grises/negras y electricidad limitada; confirmar disponibilidad y condiciones. La autorización no se extiende a la costa cercana.|https://park4night.com/es/place/617139
 soller-gym|Sóller · polideportivo|Sóller|39.7708|2.7041|parking|Gratis|1|0|warn|Parking público; puede haber movimiento del polideportivo.|https://park4night.com/es/place/280581
 soller-pitera|Sóller · Camí de Can Pitera|Sóller|39.7667|2.7105|parking|Pago de día|1|0|warn|Regulación de pago diurna; verificar horario.|https://park4night.com/es/place/713420
 deia-road|Deià · Carrer Francisco Mas|Deià|39.7489|2.6488|parking|Variable|1|0|warn|Zona estrecha; mejor para vehículos medianos.|https://park4night.com/es/place/60726
