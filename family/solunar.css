@@ -1,0 +1,27 @@
+.solunar{position:relative;margin:0 0 10px;padding:9px 10px 7px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--text)}
+.solunar-head{display:flex;align-items:center;gap:7px;min-width:0}
+.solunar-title{font-size:11px;font-weight:750;color:var(--navy);margin:0;white-space:nowrap}
+.solunar-range{margin-left:auto;font-size:10px;color:#486c70;white-space:nowrap}
+.solunar-nav{display:flex;gap:3px}
+.solunar-nav button{width:27px;height:27px;padding:0;border:1px solid var(--line);border-radius:7px;background:var(--bg);color:var(--navy);font-size:17px;line-height:1}
+.solunar-nav button:disabled{opacity:.3;cursor:default}
+.solunar-nav button:focus-visible,.solunar-info summary:focus-visible{outline:2px solid var(--accent-dark);outline-offset:2px}
+.solunar-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;list-style:none;margin:6px 0 5px;padding:0}
+.solunar-day{display:flex;flex-direction:column;align-items:center;gap:1px;padding:3px 0;border:1px solid transparent;border-radius:7px;min-width:0}
+.solunar-weekday{font-size:10px;color:#486c70;text-transform:capitalize;line-height:1.2}
+.solunar-number{font-size:12px;font-weight:650;line-height:1.3;color:var(--navy)}
+.solunar-stars{font-family:Arial,sans-serif;font-size:9px;letter-spacing:-.35px;line-height:1.4;white-space:nowrap;color:#906615}
+.solunar-empty{color:#8ba6a8}
+.solunar-today{border-color:var(--line)}
+.solunar-today .solunar-weekday{color:var(--accent-dark);font-weight:750}
+.solunar-best{background:#e8f7f7}
+.solunar-foot{display:flex;align-items:center;gap:6px;font-size:9px;line-height:1.4;color:#486c70;flex-wrap:wrap}
+.solunar-summary{font-weight:600}
+.solunar-note{margin-left:auto;white-space:nowrap}
+.solunar-info{position:relative}
+.solunar-info summary{list-style:none;cursor:pointer;width:17px;height:17px;border:1px solid #9dbebf;border-radius:50%;text-align:center;font-size:11px;line-height:15px;color:#486c70}
+.solunar-info summary::-webkit-details-marker{display:none}
+.solunar-info p{position:absolute;right:0;top:17px;z-index:40;width:min(285px,75vw);margin:5px 0 0;padding:11px;border:1px solid var(--line);border-radius:10px;background:var(--panel);box-shadow:0 4px 18px #073b4c22;font-size:11px;line-height:1.5;color:var(--text)}
+.solunar-info a{color:var(--accent-dark)}
+@media(min-width:700px){.solunar{max-width:510px}.solunar-stars{font-size:10px;letter-spacing:0}}
+@media(max-width:350px){.solunar{padding:8px 7px 6px}.solunar-title{font-size:10px}.solunar-range{font-size:9px}.solunar-nav button{width:24px;height:26px}.solunar-stars{font-size:8px}.solunar-days{gap:1px}}

@@ -10,6 +10,13 @@ on:
       - 'cameras.js'
       - 'manifest.webmanifest'
       - 'sw.js'
+      - 'family/index.html'
+      - 'family/solunar.*'
+      - 'family/sw.js'
+      - 'solunar-data.js'
+      - 'scripts/generate-solunar.cjs'
+      - 'scripts/solunar.test.cjs'
+      - 'scripts/vendor/**'
       - '.github/workflows/validate-production.yml'
   workflow_dispatch:
 jobs:
@@ -23,5 +30,7 @@ jobs:
         run: node --check app.js && node --check beaches.js && node --check cameras.js && node --check sw.js
       - name: Check manifest JSON
         run: python -m json.tool manifest.webmanifest >/dev/null
+      - name: Validate Mallorca solunar forecast
+        run: node --check family/solunar.js && node --check family/sw.js && node --test scripts/solunar.test.cjs
       - name: Check production interface
         run: grep -q '<title>BEACH CAM</title>' index.html && grep -q 'MAPA' index.html && grep -q 'CERCA' index.html
